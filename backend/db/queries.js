@@ -26,6 +26,19 @@ async function getUserByEmail(email) {
     }
 };
 
+async function getUserById(userId) {
+    try {
+        return await prisma.user.findFirst({
+            where: {
+                id: userId,
+            }
+        })
+    }catch(error) {
+        throw error;
+    }
+};
+
+
 async function createPost(title, content, published) {
     try {
         const newPost = await prisma.post.create({
@@ -86,6 +99,7 @@ async function deletePost(postId) {
 module.exports = {
     createUser,
     getUserByEmail,
+    getUserById,
     createPost,
     getAllPosts,
     getPostById,

@@ -1,10 +1,11 @@
 const express = require('express');
 const routes = require('./routes');
 require('dotenv').config();
-const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
-const bcrypt = require('bcryptjs');
-const { getUserByEmail } = require('./db/queries');
+const jwtStrategy = require('./middlewares/passportJwt');
+require('./middlewares/passportLocal');
+
+passport.use(jwtStrategy);
 
 const app = express();
 app.use(express.json());
@@ -16,38 +17,12 @@ app.get('/', (req, res) => {
         message: 'welcome'
     })
 });
-
 app.use('/posts', routes.post);
 app.use('/signIn', routes.signIn);
 app.use('/logIn', routes.logIn);
-
-passport.use(
-    new LocalStrategy(
-        {
-            usernameField: "email",
-        },
-
-        async (email, password, done) => {
-            try{
-                const user = await getUserByEmail(email);
-
-                if (!user) {
-                    return done(null, false, {message: "Incorrect email"});
-                }
-
-                const match = await bcrypt.compare(password, user.password);
-                if (!match) {
-                    return done(null, false, {message: "Incorrect password"})
-                }
-                return done(null, user);
-
-            }catch(error) {
-                return done(error);
-            }
-        }
-    )
-);
-
+app.get("/protected", passport.authenticate('jwt', { session: false }), (req, res) => {
+    return res.status(200).send("YAY! this is a protected Route")
+})
 
 app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`);

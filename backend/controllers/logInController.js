@@ -33,7 +33,7 @@ const logInUser = [
                 });
             }
 
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 120 });
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "15m" });
             return res.status(200).json({
                 token,
                 user: { email: user.email, name: user.name },
