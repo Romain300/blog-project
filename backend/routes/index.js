@@ -1,10 +1,12 @@
-const post = require('./post');
+const posts = require('./post');
 const signIn = require('./signIn');
 const logIn = require('./logIn');
+const comments = require('./comment');
 
 
 module.exports = {
-    post,
+    posts,
     signIn,
-    logIn
+    logIn,
+    comments
 }

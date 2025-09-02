@@ -96,6 +96,33 @@ async function deletePost(postId) {
     }
 };
 
+async function createComment(content, authorId, postId) {
+    try {
+        const comment = await prisma.comment.create({
+            data: {
+                content,
+                authorId,
+                postId
+            }
+        });
+        return comment;
+    }catch(error) {
+        throw error;
+    }
+};
+
+async function deleteComment(commentId) {
+    try {
+        return await prisma.comment.delete({
+            where: {
+                id: commentId,
+            }
+        })
+    }catch(error) {
+        throw error;
+    }
+};
+
 module.exports = {
     createUser,
     getUserByEmail,
@@ -104,6 +131,8 @@ module.exports = {
     getAllPosts,
     getPostById,
     deletePost,
+    createComment,
+    deleteComment
 };
 
 

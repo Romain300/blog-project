@@ -67,7 +67,7 @@ const createPost = [
             });
         }catch (error) {
             console.log(error);
-            return res.status(500).json({ errorMessage: 'something went wrong during user creation' });
+            return res.status(500).json({ errorMessage: 'something went wrong during post creation' });
         }
 
     }
