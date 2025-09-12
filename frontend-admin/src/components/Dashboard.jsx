@@ -1,7 +1,7 @@
-function Dashboard({ token }) {
+function Dashboard() {
     return (
         <div>
-            {token}
+            you are logged In
         </div>
     )
 };

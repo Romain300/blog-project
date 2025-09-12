@@ -1,15 +1,13 @@
+import { useState } from "react";
+import styles from "../styles/Form.module.css";
 import Input from "./Input";
-import styles from '../styles/Form.module.css';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from "./useAuth";
+import { Textarea } from "./Input";
 
+function NewPostForm() {
 
-function LogForm() {
-    const auth = useAuth();
     const [form, setForm] = useState({
-        email:'',
-        password:'',
+        title: "",
+        content: ""
     });
 
     const [errors, setErrors] = useState([]);
@@ -23,7 +21,7 @@ function LogForm() {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:3000/logIn", {
+            const response = await fetch("http://localhost:3000/posts", {
                 mode: "cors",
                 method: "POST",
                 headers: { "Content-type": "application/json" },
@@ -37,18 +35,20 @@ function LogForm() {
                 return;
             }
 
-            auth.login(result.token, result.user);
 
-        } catch (err) {
+        }catch (err) {
             console.error("Network error", err);
             setErrors([{ msg: "Network error, please try again later." }]);
         }
 
+        
+
     }
-    
+
     return (
+
         <div className={styles.formcard}>
-            <h2>Log In</h2>
+            <h2>New Post</h2>
             { errors.length > 0  && (
                 <ul>
                     {errors.map((error, index) => 
@@ -57,18 +57,14 @@ function LogForm() {
                 </ul>
             )}
             <form onSubmit={handleSubmit}>
-                <Input id='email' label='Email:'  type='email' value={form.email} onChange={handleChange}/>
-                <Input id='password' label='Password:'  type='password' value={form.password} onChange={handleChange}/>
+                <Input id='title' label='Title:'  type='text' value={form.title} onChange={handleChange}/>
+                <Textarea rows="5" id='content' label='Content:' value={form.content} onChange={handleChange}/>
                 <button type="submit">Submit</button>
             </form>
-            <div className={styles.infoForm}>
-                <p className="secondary-text">Don't have an account?</p>
-                <Link to='signIn'>Create one</Link>
-            </div>
         </div>
-        
     )
 };
 
-export default LogForm;
+export default NewPostForm;
 
+//check loggin and user 

@@ -1,29 +1,10 @@
 import LogForm from "./logForm";
 import Dashboard from "./Dashboard";
-import { useState, useEffect } from "react";
+import { useAuth } from "./useAuth";
 
 function Homepage() {
-   
-    const [token, setToken] = useState(localStorage.getItem("token"));
-
-    const handleTokenChange = () => {
-            setToken(localStorage.getItem("token"));
-        };
-
-    useEffect(() => {
-        
-
-        window.addEventListener("storage", handleTokenChange);
-
-        return () => {
-            window.removeEventListener("storage", handleTokenChange)
-        }
-
-    }, [token]);
-
-    return token ? <Dashboard token={token}/> : <LogForm />;
+    const auth = useAuth();
+    return auth.token ? <Dashboard/> : <LogForm />;
 }
 
 export default Homepage;
-
-//Use context

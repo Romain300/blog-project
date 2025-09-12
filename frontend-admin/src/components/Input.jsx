@@ -18,4 +18,17 @@ function Input({ label, type, name, id, onChange, value }) {
     )
 };
 
+export function Textarea({ rows, label, name, id, onChange, value }) {
+    
+    return (
+        <div className={styles.inputCustom}>
+            <label htmlFor={id}>
+                {label}
+            </label>
+            <textarea rows={rows} id={id} name={name} placeholder={label} value={value} onChange={onChange}></textarea>
+        </div>
+
+    )
+};
+
 export default Input;

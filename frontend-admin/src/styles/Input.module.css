@@ -11,6 +11,12 @@ input {
     padding: 0.4rem 0.6rem;
 }
 
+textarea {
+    outline: none;
+    border: 1px solid #D3D3D3;
+    padding: 0.4rem 0.6rem;
+}
+
 label {
     color: #5A5A5A;
 }
