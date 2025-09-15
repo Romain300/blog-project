@@ -2,8 +2,12 @@ import { useState } from "react";
 import styles from "../styles/Form.module.css";
 import Input from "./Input";
 import { Textarea } from "./Input";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 function NewPostForm() {
+    const navigate = useNavigate();
+    const { token } = useAuth();
 
     const [form, setForm] = useState({
         title: "",
@@ -24,7 +28,10 @@ function NewPostForm() {
             const response = await fetch("http://localhost:3000/posts", {
                 mode: "cors",
                 method: "POST",
-                headers: { "Content-type": "application/json" },
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                 },
                 body: JSON.stringify(form)
             })
 
@@ -35,6 +42,7 @@ function NewPostForm() {
                 return;
             }
 
+            navigate("/");
 
         }catch (err) {
             console.error("Network error", err);
@@ -67,4 +75,3 @@ function NewPostForm() {
 
 export default NewPostForm;
 
-//check loggin and user 
