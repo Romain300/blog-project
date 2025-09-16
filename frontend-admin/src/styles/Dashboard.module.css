@@ -70,3 +70,12 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%)
 }
+.dialogDiv {
+    display: flex;
+}
+
+.dialogActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
