@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/Dashboard.module.css";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
     const [posts, setPosts] = useState([]);
@@ -20,29 +21,6 @@ function Dashboard() {
         });
     };
 
-    const fetchPosts = async() => {
-
-        try {
-            const response = await fetch("http://localhost:3000/posts", {
-                mode: "cors",
-                headers: { "Content-type": "application/json"}
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                setErrors([{ msg: result.errorMessage }]);
-                return;
-            }
-
-            setPosts(result.posts);
-            return;
-        }catch (err) {
-            console.error("Network error", err);
-            setErrors([{ msg: "Network error, please try again later." }]);
-        }
-    };
-
     const handleDeleteButton = (event) => {
         const idPost = event.target.getAttribute('data-id');
         setSelectedPost(idPost);
@@ -59,16 +37,11 @@ function Dashboard() {
                 }
             });
 
-            let result = null;
-
-            if (response.status !== 204) {
-                result = await response.json();
-            }
-
             if (!response.ok) {
-                console.log(errors);
+                const result = response.json();
                 const newErrors = [{ msg: result.errorMessage }];
                 setErrors(newErrors);
+                console.log(errors);
                 alert(newErrors.map((error) => error.msg));
                 return;
             }
@@ -84,6 +57,28 @@ function Dashboard() {
     };
 
     useEffect(() => {
+        const fetchPosts = async() => {
+            try {
+                const response = await fetch("http://localhost:3000/posts", {
+                    mode: "cors",
+                    headers: { "Content-type": "application/json"}
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    setErrors([{ msg: result.errorMessage }]);
+                    return;
+                }
+
+                setPosts(result.posts);
+                return;
+            }catch (err) {
+                console.error("Network error", err);
+                setErrors([{ msg: "Network error, please try again later." }]);
+            }
+        };
+
         fetchPosts();
     }, []);
 
@@ -111,7 +106,7 @@ function Dashboard() {
                     </div>
                     <div className={styles.messageContent}>{post.content}</div>
                     <button data-id={post.id} type="button" onClick={handleDeleteButton} className={styles.delete}>Delete</button>
-                    <button data-id={post.id} type="button" className={styles.modify}>Modify</button>
+                    <Link to={`/post/${post.id}`}><button type="button" className={styles.modify}>Modify</button></Link>
                 </div>
 
             ))}

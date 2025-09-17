@@ -123,6 +123,22 @@ async function deleteComment(commentId) {
     }
 };
 
+async function updatePost(postId, title, content) {
+    try {
+        return await prisma.post.update({
+            where: {
+                id: postId
+            },
+            data: {
+                title, 
+                content
+            }
+        });
+    }catch(error) {
+        throw error;
+    }
+};
+
 module.exports = {
     createUser,
     getUserByEmail,
@@ -132,7 +148,8 @@ module.exports = {
     getPostById,
     deletePost,
     createComment,
-    deleteComment
+    deleteComment,
+    updatePost
 };
 
 

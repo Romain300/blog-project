@@ -35,7 +35,7 @@ async function deletePost(req, res) {
     }
 };
 
-const validateUser = [
+const validatePost = [
     body('title')
         .trim()
         .notEmpty()
@@ -47,7 +47,7 @@ const validateUser = [
 ];
 
 const createPost = [
-    validateUser,
+    validatePost,
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -73,10 +73,34 @@ const createPost = [
     }
 ];
 
+const updatePost = [
+    validatePost,
+
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { title, content } = req.body;
+        const postId = parseInt(req.params.postId);
+        try {
+            const updatedPost = await db.updatePost(postId, title, content);
+            return res.status(200).json({
+                message: 'Your post has been updapted',
+                updatedPost
+            });
+        }catch (error) {
+            console.error(error);
+            return res.status(500).json({ errorMessage: 'something went wrong during post updated' });
+        }
+    }
+];
+
 
 module.exports = {
     getAllPosts,
     getPostById,
     deletePost,
-    createPost
+    createPost,
+    updatePost
 };
