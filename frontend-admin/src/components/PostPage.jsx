@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import styles from "../styles/Form.module.css";
 import Input from "./Input";
 import { Textarea } from "./Input";
+import { useNavigate } from "react-router-dom";
 
 function PostPage() {
+    const navigate = useNavigate();
     const { postId } = useParams();
     const [errors, setErrors] = useState([]);
 
@@ -48,11 +50,26 @@ function PostPage() {
         getPost();
     }, [postId]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
-            const response = fetch(`http://localhost:3000/posts/${postId}`, {
+            const response = await fetch(`http://localhost:3000/posts/${postId}`, {
+                mode: "cors",
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(form)
+            });
 
-            })
+            const result = await response.json();
+
+            if (!response.ok) {
+                setErrors(result.errors);
+                return;
+            }
+
+            navigate("/");
 
         }catch (err) {
             console.error("Network error", err);
@@ -74,12 +91,10 @@ function PostPage() {
             <form onSubmit={handleSubmit}>
                 <Input id='title' label='Title:'  type='text' value={form.title} onChange={handleChange}/>
                 <Textarea rows="5" id='content' label='Content:' value={form.content} onChange={handleChange}/>
-                <button type="submit">Submit</button>
+                <button type="submit">Update</button>
             </form>
         </div>
     )
 };
 
 export default PostPage;
-
-//finish the update

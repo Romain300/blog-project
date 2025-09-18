@@ -27,3 +27,7 @@ function App() {
 };
 
 export default App;
+
+
+//post published, add protected route, add 404 not found page
+// add token checked on protected route

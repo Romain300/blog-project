@@ -44,17 +44,34 @@
     color: #fff; 
 }
 .delete {
-    background-color: #b00020; 
-    border: 1px solid #8c0018;
+    background-color: #d32f2f;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.publish {
+    background-color: #28a745; 
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.publish:hover {
+    background-color: #218838; 
+    transform: translateY(-2px);
+}
+
+.modify {
     margin-right: 1rem;
+    margin-left: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .delete:hover {
-    background-color: #d32f2f;
+    transform: translateY(-2px);
+    background-color: #b00020; 
 }
 
 .modify:hover {
     background-color: #265dbe;
+    transform: translateY(-2px);
 }
 
 dialog {

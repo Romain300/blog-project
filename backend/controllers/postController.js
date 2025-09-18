@@ -35,6 +35,18 @@ async function deletePost(req, res) {
     }
 };
 
+async function updatePublishedStatus(req, res) {
+    const { published } = req.body;
+    const postId = parseInt(req.params.postId);
+    try {
+        const updatedPost = await db.handlePublish(postId, published);
+        return res.status(204).end();
+    }catch (error) {
+        console.log(error);
+        res.status(500).json({ errorMessage: "Could not publish/unpublish your post" });
+    }
+};
+
 const validatePost = [
     body('title')
         .trim()
@@ -55,8 +67,7 @@ const createPost = [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { title, content } = req.body;
-        const published = req.body.published ? true : false;
+        const { title, content, published } = req.body;
         try {
             console.log("creating post...");
             const newPost = await db.createPost(title, content, published);
@@ -97,10 +108,13 @@ const updatePost = [
 ];
 
 
+
+
 module.exports = {
     getAllPosts,
     getPostById,
     deletePost,
     createPost,
-    updatePost
+    updatePost,
+    updatePublishedStatus
 };

@@ -27,6 +27,39 @@ function Dashboard() {
         dialogRef.current.showModal();
     };
 
+    const handlePublishButton = async (event) => {
+        const idPost = event.target.getAttribute('data-id');
+        const currentState = event.target.getAttribute('data-published') === "true";
+        const newState = !currentState;
+        const payload = { published: newState };
+       
+        try {
+            const response = await fetch(`http://localhost:3000/posts/${idPost}/updateStatus`, {
+                mode: "cors",
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const result = await response.json();
+                const newErrors = [{ msg: result.errorMessage }];
+                setErrors(newErrors);
+                console.log(errors);
+                alert(newErrors.map((error) => error.msg));
+                return;
+            }
+
+            setPosts((prev) => prev.map((post) => post.id === parseInt(idPost) ? {...post, published: newState } : post ));
+
+        }catch (err) {
+            console.error("Network error", err);
+            setErrors([{ msg: "Network error, please try again later." }]);
+        }
+    };
+
     const deletePost = async () => {
         try {
             const response = await fetch(`http://localhost:3000/posts/${selectedPost}`, {
@@ -102,11 +135,20 @@ function Dashboard() {
                 <div key={post.id} className={styles.messageDiv}>
                     <div className={styles.messageTitle}>{post.title}</div>
                     <div className={styles.messageMeta}>
-                        <p>{formatDate(post.uploadAt)}</p>
+                        { post.published && (
+                            <p>{formatDate(post.uploadAt)}</p>
+                        )}
                     </div>
                     <div className={styles.messageContent}>{post.content}</div>
                     <button data-id={post.id} type="button" onClick={handleDeleteButton} className={styles.delete}>Delete</button>
                     <Link to={`/post/${post.id}`}><button type="button" className={styles.modify}>Modify</button></Link>
+                    { post.published && (
+                        <button data-id={post.id} data-published={post.published} type="button" onClick={handlePublishButton} className={styles.publish}>Unpublish</button>
+                    )}
+                    { !post.published && (
+                        <button data-id={post.id} data-published={post.published} type="button" onClick={handlePublishButton} className={styles.publish}>Publish</button>
+                    )}
+                    
                 </div>
 
             ))}
@@ -116,4 +158,4 @@ function Dashboard() {
 
 export default Dashboard;
 
-// add chehck token on this backend route
+// when UI update for published date still null, have to work on it

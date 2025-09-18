@@ -26,3 +26,14 @@ label {
     gap: 0.2rem;
     flex-direction: column;
 }
+
+.checkboxCustom {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.checkbox {
+    width: 1.7rem;
+    height: 1.7rem;
+}

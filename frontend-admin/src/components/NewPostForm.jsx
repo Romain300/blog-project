@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "../styles/Form.module.css";
 import Input from "./Input";
-import { Textarea } from "./Input";
+import { Textarea, Checkbox } from "./Input";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./useAuth";
 
@@ -11,14 +11,18 @@ function NewPostForm() {
 
     const [form, setForm] = useState({
         title: "",
-        content: ""
+        content: "",
+        published: true,
     });
 
     const [errors, setErrors] = useState([]);
 
     const handleChange = (event) => {
-        const { id, value } = event.target;
-        setForm({ ...form, [id]: value });
+        const { id, value, type, checked } = event.target;
+        setForm({ 
+            ...form, 
+            [id]: type === "checkbox" ? checked : value
+        });
     };
 
     const handleSubmit = async (event) => {
@@ -49,8 +53,6 @@ function NewPostForm() {
             setErrors([{ msg: "Network error, please try again later." }]);
         }
 
-        
-
     }
 
     return (
@@ -67,6 +69,7 @@ function NewPostForm() {
             <form onSubmit={handleSubmit}>
                 <Input id='title' label='Title:'  type='text' value={form.title} onChange={handleChange}/>
                 <Textarea rows="5" id='content' label='Content:' value={form.content} onChange={handleChange}/>
+                <Checkbox id='published' label='Publish:' checked={form.published} onChange={handleChange}/>
                 <button type="submit">Submit</button>
             </form>
         </div>

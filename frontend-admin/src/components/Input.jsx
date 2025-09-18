@@ -31,4 +31,24 @@ export function Textarea({ rows, label, name, id, onChange, value }) {
     )
 };
 
+export function Checkbox({ label, checked, name, id, onChange }) {
+    
+    return (
+        <div className={styles.checkboxCustom}>
+            <label htmlFor={id}>
+                {label}
+            </label>
+            <input 
+                className={styles.checkbox}
+                id={id} 
+                checked={checked}
+                type="checkbox" 
+                name={name} 
+                placeholder={label} 
+                onChange={onChange}></input>
+        </div>
+
+    )
+};
+
 export default Input;

@@ -46,6 +46,7 @@ async function createPost(title, content, published) {
                 title,
                 content,
                 published,
+                uploadAt: published ? new Date() : null
             }
         });
         return newPost;
@@ -139,6 +140,23 @@ async function updatePost(postId, title, content) {
     }
 };
 
+async function handlePublish(postId, published) {
+    try {
+        const isPublished = published === "true" || published === true;
+        return await prisma.post.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                published: isPublished,
+                uploadAt: isPublished ? new Date() : null
+            }
+        });
+    }catch(error) {
+        throw error;
+    }
+};
+
 module.exports = {
     createUser,
     getUserByEmail,
@@ -149,7 +167,8 @@ module.exports = {
     deletePost,
     createComment,
     deleteComment,
-    updatePost
+    updatePost,
+    handlePublish
 };
 
 
