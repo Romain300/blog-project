@@ -39,9 +39,13 @@ function NewPostForm() {
                 body: JSON.stringify(form)
             })
 
-            const result = await response.json();
-
+            if (response.status === 401) {
+                setErrors([{ msg: "Unauthorized, try to log in again" }]);
+                return;
+            }
+ 
             if (!response.ok) {
+                const result = await response.json();
                 setErrors(result.errors);
                 return;
             }
@@ -53,7 +57,7 @@ function NewPostForm() {
             setErrors([{ msg: "Network error, please try again later." }]);
         }
 
-    }
+    };
 
     return (
 

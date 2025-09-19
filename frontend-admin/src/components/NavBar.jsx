@@ -16,7 +16,7 @@ function NavBar() {
                     { auth.token && (
                         <>
                             <Link to='/newPost'><button type="button" className={styles.navButton}>New Post</button></Link>
-                            <Link to='/'><button onClick={auth.logout} type="button" className={styles.navButton}>Log Out</button></Link>
+                            <button onClick={auth.logout} type="button" className={styles.navButton}>Log Out</button>
                         </>
                     )}
                     

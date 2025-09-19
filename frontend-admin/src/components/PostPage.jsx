@@ -4,8 +4,10 @@ import styles from "../styles/Form.module.css";
 import Input from "./Input";
 import { Textarea } from "./Input";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 function PostPage() {
+    const { token } = useAuth();
     const navigate = useNavigate();
     const { postId } = useParams();
     const [errors, setErrors] = useState([]);
@@ -58,13 +60,18 @@ function PostPage() {
                 method: "PUT",
                 headers: {
                     "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(form)
             });
 
-            const result = await response.json();
+            if (response.status === 401) {
+                setErrors([{ msg: "Unauthorized, try to log in again" }]);
+                return;
+            }
 
             if (!response.ok) {
+                const result = await response.json();
                 setErrors(result.errors);
                 return;
             }

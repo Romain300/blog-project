@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/Dashboard.module.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 function Dashboard() {
+    const { token } = useAuth();
     const [posts, setPosts] = useState([]);
     const [errors, setErrors] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
@@ -38,10 +40,16 @@ function Dashboard() {
                 mode: "cors",
                 method: "PUT",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(payload)
             });
+
+            if (response.status === 401) {
+                alert("Unauthorized, try to log in again");
+                return;
+            }
 
             if (!response.ok) {
                 const result = await response.json();
@@ -52,7 +60,7 @@ function Dashboard() {
                 return;
             }
 
-            setPosts((prev) => prev.map((post) => post.id === parseInt(idPost) ? {...post, published: newState } : post ));
+            setPosts((prev) => prev.map((post) => post.id === parseInt(idPost) ? {...post, published: newState, uploadAt: new Date() } : post ));
 
         }catch (err) {
             console.error("Network error", err);
@@ -66,13 +74,16 @@ function Dashboard() {
                 mode: "cors",
                 method: "DELETE",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 }
             });
 
             if (!response.ok) {
                 const result = response.json();
-                const newErrors = [{ msg: result.errorMessage }];
+                let currentError = result.errorMessage;
+                if (!currentError) currentError = "Unauthorized, try to log in again";
+                const newErrors = [{ msg: currentError }];
                 setErrors(newErrors);
                 console.log(errors);
                 alert(newErrors.map((error) => error.msg));
@@ -158,4 +169,3 @@ function Dashboard() {
 
 export default Dashboard;
 
-// when UI update for published date still null, have to work on it
