@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 const AuthContext = createContext();
-import * as jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const AuthProvider = ({ children }) => {
     const { pathname } = useLocation();
@@ -52,5 +52,3 @@ const AuthProvider = ({ children }) => {
 
 export { AuthContext };
 export default AuthProvider;
-
-//solve decoding token issue 

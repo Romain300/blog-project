@@ -4,7 +4,9 @@ import Homepage from './components/HomePage';
 import SignForm from './components/signForm';
 import NewPostForm from './components/NewPostForm';
 import PostPage from './components/PostPage';
-import { Routes, Route } from 'react-router-dom';
+import NotFound from './components/notFound';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 import AuthProvider from './components/AuthProvider';
 
 function App() {
@@ -17,9 +19,14 @@ function App() {
 
           <Route path='/' element={ <Homepage/> }/>
           <Route path='/signIn' element={ <SignForm/> }/>
-          <Route path='/newPost' element={ <NewPostForm/> }/>
-          <Route path='/post/:postId' element={ <PostPage/> }/>
+          <Route path= '*' element={ <Navigate to='/404NotFound'/> }/>
+          <Route path='/404NotFound' element={ <NotFound /> }/>
 
+          <Route element={ <PrivateRoute/> }>
+            <Route path='/newPost' element={ <NewPostForm/> }/>
+            <Route path='/post/:postId' element={ <PostPage/> }/>
+          </Route>
+          
         </Routes>
       </div>
     </AuthProvider>
@@ -29,5 +36,3 @@ function App() {
 export default App;
 
 
-//post published, add protected route, add 404 not found page
-// add token checked on protected route

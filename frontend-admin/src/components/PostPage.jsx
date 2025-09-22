@@ -33,7 +33,7 @@ function PostPage() {
                 const result = await response.json();
 
                 if (!response.ok) {
-                    setErrors([{ msg: result.errorMessage }]);
+                    navigate('/404NotFound')
                     return;
                 }
 
@@ -50,7 +50,7 @@ function PostPage() {
         };
 
         getPost();
-    }, [postId]);
+    }, [postId, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
