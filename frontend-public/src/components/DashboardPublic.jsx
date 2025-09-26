@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "../styles/Dashboard.module.css";
+import styles from "../styles/DashboardPublic.module.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "./useAuth";
+import { useAuthPublic } from "./UseAuthPublic";
 
-function Dashboard() {
-    const { token } = useAuth();
+function DashboardPublic() {
+    const { token } = useAuthPublic();
     const [posts, setPosts] = useState([]);
     const [errors, setErrors] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
@@ -167,5 +167,7 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default DashboardPublic;
 
+
+//change it to fit with the public needs
