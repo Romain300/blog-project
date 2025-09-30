@@ -59,9 +59,15 @@
 }
 
 .modify {
-    margin-right: 1rem;
-    margin-left: 1rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: white;
+    background-color: #0d6efd;
+    padding: 0.3rem 0.5rem;
     transition: background-color 0.3s, transform 0.2s;
+    border-radius: 0.5rem;
+    text-align: center;
+    text-decoration: none;  
 }
 
 .delete:hover {
@@ -69,8 +75,10 @@
     background-color: #b00020; 
 }
 
-.modify:hover {
-    background-color: #265dbe;
+.modify:hover,
+.modifyButton:hover {
+    background-color: #0b5ed7;    
+    border-color: #0a58ca;
     transform: translateY(-2px);
 }
 
@@ -95,4 +103,13 @@ dialog {
     display: flex;
     gap: 1rem;
     margin-top: 0.5rem;
+}
+
+.divButton {
+    display: flex;
+    gap: 1rem;
+}
+
+h2 {
+    margin-bottom: 1REM;
 }

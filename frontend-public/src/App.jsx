@@ -4,6 +4,7 @@ import NavBarPublic from './components/NavBarPublic.jsx';
 import SignFormPublic from './components/SignInPublic.jsx';
 import { Routes, Route } from 'react-router-dom';
 import AuthProviderPublic from './components/AuthProviderPublic.jsx';
+import PostPagePublic from './components/PostPagePublic.jsx';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={ <HomepagePublic/> }/>
           <Route path='/signIn' element= { <SignFormPublic/> }/>
+          <Route path='/post/:postId' element={ <PostPagePublic/> }/>
         </Routes>
       </div>
     </AuthProviderPublic>
