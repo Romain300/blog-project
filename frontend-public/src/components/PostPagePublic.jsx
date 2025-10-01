@@ -6,7 +6,7 @@ import { useAuthPublic } from "./UseAuthPublic";
 import { TextareaPublic } from "./InputPublic";
 
 function PostPagePublic() {
-    const { token } = useAuthPublic();
+    const { token, user } = useAuthPublic();
     const navigate = useNavigate();
     const { postId } = useParams();
     const [errors, setErrors] = useState([]);
@@ -31,8 +31,10 @@ function PostPagePublic() {
     };
 
     const closeDialog = () => {
-        formRef.current.reset();
         dialogRef.current.close();
+        setForm({
+            content: ""
+        });
     };  
 
     const handleChange = (event) => {
@@ -54,16 +56,22 @@ function PostPagePublic() {
                 body: JSON.stringify(form)
             });
 
+            const result = await response.json();
+
             if (!response.ok) {
-                const result = await response.json();
                 const errors = result.errors || [{ msg: result.errorMessage }]
                 setErrors(errors) ;
                 return
             }
 
+            closeDialog();
             alert("Your reply has been posted");
 
-
+            setPost((prev) => ({
+                ...prev,
+                comments: [...prev.comments, result.comment] 
+            }));
+ 
         } catch(err) {
             console.error("Network error", err);
             setErrors([{ msg: "Network error, please try again later." }]);
@@ -123,6 +131,7 @@ function PostPagePublic() {
                     </div>
                 </form>
             </dialog>
+
             <div className={styles.messageDiv}>
                 <div className={styles.messageTitle}>{post?.title}</div>
                 <div className={styles.messageMeta}>
@@ -131,10 +140,41 @@ function PostPagePublic() {
                 <div className={styles.messageContent}>{post?.content}</div>
                 <button onClick={() => dialogRef.current.showModal()}>Reply</button>
             </div>
+
+            <div className={styles.commmentsDiv}>
+                {post?.comments.map((comment) => (
+                    <div className={styles.comment} key={comment.id}>
+                        <div className={styles.metadata}>
+                            {user.name === comment.author.name ? (
+                                <div className={styles.commentAuthor}>
+                                    {comment.author.name} (You)
+                                </div>
+                            ) : (
+                                <div className={styles.commentAuthor}>{comment.author.name}</div>
+                            )}
+
+                            <div className={styles.commentDate}>
+                                {formatDate(comment.uploadAt)}
+                            </div>
+                        </div>
+
+                        <div className={styles.commentContent}>
+                            {comment.content}
+                        </div>
+                        
+                        <div>
+                            {user.name === comment.author.name && (
+                                <button className={styles.deleteComment} >🗑 Delete</button>
+                            )}
+                        </div>
+                    </div>
+                ))}
+    
+            </div>
          </div>
     )
 };
 
 export default PostPagePublic;
 
-//Display comment + close dialog + clean form when sending comment
+//updat page when new comment + delte post

@@ -104,7 +104,11 @@ async function createComment(content, authorId, postId) {
                 content,
                 authorId,
                 postId
-            }
+            },
+            include: {
+                        author: true
+                    }
+            
         });
         return comment;
     }catch(error) {
@@ -171,7 +175,4 @@ module.exports = {
     handlePublish
 };
 
-
-
-
-// review createPost for date and published
+// fix you +== delete button

@@ -17,7 +17,8 @@ async function getPostById(req, res) {
         return res.status(200).json({ 
             title: post.title,
             content: post.content,
-            uploadAt: post.uploadAt
+            uploadAt: post.uploadAt,
+            comments: post.comments
          });
     } catch (error) {
         console.error(error);
