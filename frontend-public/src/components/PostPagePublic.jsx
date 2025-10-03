@@ -37,10 +37,45 @@ function PostPagePublic() {
         });
     };  
 
+    const deleteComment = async(event) => {
+        const commentId = parseInt(event.target.dataset.commentid);
+
+        if (!post || !post.comments?.some((comment) => comment.id === commentId)) {
+            alert("Network issue, retry later");
+            return;
+        }
+
+        const response = await fetch(`http://localhost:3000/comments/${commentId}`, {
+            mode: "cors",
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401) {
+            alert("You are not authorized, try to log in again.");
+            return;
+        }
+
+        if (!response.ok) {
+            const result = await response.json();
+            alert(result.errorMessage);
+            return;
+        }
+
+        alert("Your comment has been deleted");
+        setPost((prev) => ({
+            ...prev,
+            comments: prev.comments.filter((comment) => comment.id !== commentId)
+        }));
+    };
+
     const handleChange = (event) => {
         const { id, value } = event.target;
         setForm({ ...form, [id]: value })
-    }
+    };
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -78,7 +113,6 @@ function PostPagePublic() {
         }
 
     };
-
 
     useEffect(() => {
         const getPost = async () => {
@@ -164,7 +198,7 @@ function PostPagePublic() {
                         
                         <div>
                             {user.name === comment.author.name && (
-                                <button className={styles.deleteComment} >🗑 Delete</button>
+                                <button onClick={deleteComment} data-commentid={comment.id} className={styles.deleteComment} >🗑 Delete</button>
                             )}
                         </div>
                     </div>
@@ -177,4 +211,3 @@ function PostPagePublic() {
 
 export default PostPagePublic;
 
-//updat page when new comment + delte post

@@ -3,7 +3,7 @@ const { createComment, deleteComment } = require('../controllers/commentControll
 const passport = require('passport');
 
 const router = Router();
-router.delete('/commentId', deleteComment);
+router.delete('/:commentId', passport.authenticate('jwt', { session: false }), deleteComment);
 router.post('/:postId', passport.authenticate('jwt', { session: false }), createComment)
 
 module.exports = router;

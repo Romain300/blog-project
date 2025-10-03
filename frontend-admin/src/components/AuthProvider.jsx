@@ -6,11 +6,12 @@ import { jwtDecode } from "jwt-decode";
 const AuthProvider = ({ children }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
 
     const login = (newToken, newUser) => {
         localStorage.setItem("token", newToken);
+        localStorage.setItem("user", JSON.stringify(newUser));
         setToken(newToken);
         setUser(newUser);
     };
@@ -19,6 +20,7 @@ const AuthProvider = ({ children }) => {
         setUser(null);
         setToken(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         navigate('/');
     }, [navigate]);
 
@@ -39,7 +41,7 @@ const AuthProvider = ({ children }) => {
             alert('Your session has expired, please log in again.');
             logout();
         }
-    }, [pathname, logout, token])
+    }, [pathname, logout, token]);
 
     
     
