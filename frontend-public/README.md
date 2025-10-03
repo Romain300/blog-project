@@ -1,16 +1,105 @@
-# React + Vite
+# MyBlog - Public-Facing React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+MyBlog is a public-facing blogging platform built with **React** and **React Router**. It allows users to **sign up**, **log in**, view posts, comment on posts, and manage their own comments. The app also features authentication-aware routing, a responsive dashboard, and a simple 404 page for unknown routes.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **User Authentication**
+  - Sign up with name, email, and password.
+  - Log in with email and password.
+  - Logout functionality.
+  - Session management with JWT tokens and automatic expiration handling.
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Public & Private Routes**
+  - Public pages: login, registration, homepage.
+  - Private pages: post details with commenting functionality.
+  - Protected routes using `PrivateRoutePublic`.
 
-## Expanding the ESLint configuration
+- **Post Management**
+  - View all published posts in a dashboard (`DashboardPublic`).
+  - View individual posts (`PostPagePublic`) and their comments.
+  - Logged-in users can reply to posts and delete their own comments.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Custom Input Components**
+  - Reusable components for text input, textarea, and checkboxes (`InputPublic`, `TextareaPublic`, `CheckboxPublic`).
+
+- **Navigation**
+  - Auth-aware navbar (`NavBarPublic`) showing login/sign-in buttons for unauthenticated users, and logout for authenticated users.
+
+- **Error Handling**
+  - Handles network errors and API errors gracefully.
+  - 404 Not Found page (`NotFoundPublic`) for unmatched routes.
+
+---
+
+## Tech Stack
+
+- **Frontend:** React, React Router v6, JavaScript, CSS Modules  
+- **Authentication:** JWT (JSON Web Tokens)  
+- **Data Fetching:** Fetch API (CORS enabled)  
+- **State Management:** React Context (`AuthContextPublic`) and hooks  
+- **Styling:** CSS Modules for component-level styles  
+
+---
+
+## Project Structure
+
+```
+src/
+├─ components/
+│  ├─ AuthProviderPublic.jsx
+│  ├─ useAuthPublic.jsx
+│  ├─ HomepagePublic.jsx
+│  ├─ DashboardPublic.jsx
+│  ├─ PostPagePublic.jsx
+│  ├─ LogFormPublic.jsx
+│  ├─ SignFormPublic.jsx
+│  ├─ InputPublic.jsx
+│  ├─ NavBarPublic.jsx
+│  ├─ PrivateRoutePublic.jsx
+│  ├─ NotFoundPublic.jsx
+├─ styles/
+│  ├─ DashboardPublic.module.css
+│  ├─ InputPublic.module.css
+│  ├─ FormPublic.module.css
+│  ├─ NavBarPublic.module.css
+├─ App.jsx
+├─ index.jsx
+```
+
+## Setup & Installation
+
+1. **Clone the repository**
+```bash
+git clone <your-repo-url>
+cd <your-repo-folder>
+```
+
+2. **Install dependencies**
+```bash
+npm install
+```
+
+3. **Start the development server**
+```bash
+npm run dev
+```
+
+## Features
+
+- User authentication with JWT
+- Public and private routes
+- Create, view, and delete comments
+- Responsive UI components with modular CSS
+- 404 Not Found page handling
+
+## Usage
+
+- Log in using your credentials to access posts.
+- Sign up if you don’t have an account.
+- View individual posts and reply via the comment dialog.
+- Delete your own comments.
+- Navigate using the navbar for login, logout, and sign-in options.
